@@ -48,17 +48,10 @@ public class Server {
 	private void waitForUser(int numOfPlayers) {
 		for(int i = 1 ; i <= numOfPlayers ; i++)
 		{
-			try {
-				System.out.println("Waiting for "+ i + " more player to connect");
-				nUser = server.accept();
-				players.add(new Player(nUser, this));
-				System.out.println(players.get(i-1).getUsername() + " has connected!");
-				broadcastToAll(players.get(i-1).getUsername() + " has connected!");
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			System.out.println("Waiting for "+ i + " more player to connect");
+			waitForAPlayer();
+			System.out.println(players.get(i-1).getUsername() + " has connected!");
+			broadcastToAll(players.get(i-1).getUsername() + " has connected!");
 		}
 		System.out.println("Everyone has connected");
 		Scanner sc = new Scanner(System.in);
@@ -67,6 +60,17 @@ public class Server {
 			String message = sc.nextLine();
 			broadcastToAll(message);
 		}
+	}
+	
+	public void waitForAPlayer()
+	{
+		try {
+			nUser = server.accept();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		players.add(new Player(nUser, this));
 	}
 	
 	public void broadcastToAll(String message)

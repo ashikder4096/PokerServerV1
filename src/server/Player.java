@@ -14,6 +14,8 @@ public class Player implements Runnable{
 	private DataOutputStream write;
 	private Server server;
 	
+	Thread t = new Thread(this);
+	
 	private ArrayList<Card> Hand;
 	private boolean isPlaying = false;
 	
@@ -27,8 +29,6 @@ public class Player implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		Thread t = new Thread(this);
 		t.start();
 	}
 	
@@ -79,6 +79,7 @@ public class Player implements Runnable{
 		return write;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
 		while(true)
@@ -86,10 +87,32 @@ public class Player implements Runnable{
 			String message = null;
 			try {
 				message = read.readUTF();
-			} catch (IOException e) {
+				
+			} catch (IOException e) { //checks if user is still connected. If not, wait for another user
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				broadcastToAll("User (" + username + ") has diconnected");
+				broadcastToAll("Waiting for another player to join");
+				try {
+					connection.close();
+					write.close();
+					read.close();
+					System.out.println("User (" + username + ") has diconnected");
+					System.out.println("Connection successfully closed");
+					isPlaying = false;
+					server.getPlayers().remove(this);
+					System.out.println("Player has been removed from the list");
+					System.out.println("Waiting for another user to join");
+					server.waitForAPlayer();
+					t.stop();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					//e1.printStackTrace();
+					
+				}
+				
+				
 			}
+			
 			if(message.contains("CHAT# "))
 			{
 				String chat = this.username + ": " + message.substring(6);
