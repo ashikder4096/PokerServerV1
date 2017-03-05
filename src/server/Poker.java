@@ -16,6 +16,21 @@ public class Poker{
 	private int Round = 0;
 	private int SmallBlind = -1, BigBlind = 0, CurrentPlayer = 0;
 	
+	private static final String[] RANKS =
+		{"ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"};
+
+	/**
+	 * The suits of the cards for this game to be sent to the deck.
+	 */
+	private static final String[] SUITS =
+		{"spades", "hearts", "diamonds", "clubs"};
+
+	/**
+	 * The values of the cards for this game to be sent to the deck.
+	 */
+	private static final int[] POINT_VALUES =
+		{14, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+	
 	public Poker(Server server, ArrayList<Player> players, int startingBalance)
 	{
 		this.server = server;
