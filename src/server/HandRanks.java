@@ -1,5 +1,5 @@
 package server;
-public enum Hands {
+public enum HandRanks {
 	Royal_Flush(9),
 	Straight_Flush(8),
 	Four_Of_A_Kind(7),
@@ -12,7 +12,7 @@ public enum Hands {
 	High_Card(0);
 	
 	int value;
-	Hands(int value)
+	HandRanks(int value)
 	{
 
 	}

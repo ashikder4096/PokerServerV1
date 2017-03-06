@@ -97,6 +97,10 @@ public class Card {
 	 */
 	@Override
 	public String toString() {
+		if(this == null)
+		{
+			return "";
+		}
 		return "[" + rank + "] of [" + suit + "] (point value = [" + pointValue +"])";
 	}
 	
