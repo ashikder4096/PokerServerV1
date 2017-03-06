@@ -13,6 +13,13 @@ package server;
  * <code>Card</code> represents a playing card.
  */
 public class Card {
+	
+	public static void main(String[] args) {
+		
+		Card a = new Card("A", "DIAMOND", 14);
+		Card b = new Card("A", "SPADES", 14);
+		System.out.println(a.comparedTo(b));
+	}
 
 	/**
 	 * String value that holds the suit of the card
@@ -70,6 +77,24 @@ public class Card {
 	 */
 	public int pointValue() {
 		return pointValue;
+	}
+	
+	//Poker logic
+	public Card comparedTo(Card b)
+	{
+		if(this.pointValue == b.pointValue)
+		{
+			if(this.suit.compareTo(b.suit) >0)
+			{
+				return this;
+			}
+			else return b;
+		}
+		if(this.pointValue > b.pointValue)
+		{
+			return this;
+		}
+		else return b;
 	}
 
 	/** Compare this card with the argument.

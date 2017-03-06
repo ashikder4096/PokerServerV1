@@ -16,9 +16,42 @@ public class Player implements Runnable{
 	
 	Thread t = new Thread(this);
 	
+	private PlayerHand playerhand;
+	
 	private ArrayList<Card> Hand;
 	private boolean isPlaying = false;
 	
+	public ArrayList<Card> hand()
+	{
+		return Hand;
+	}
+
+	public void clearHand() {
+		Hand.clear();
+	}
+	
+	public void addToHand(Card c)
+	{
+		Hand.add(c);
+	}
+	
+	public void initializePlayerHand()//meant to be used at the end of the game
+	{
+		playerhand = new PlayerHand(Hand);
+	}
+	
+	public PlayerHand playerHand() {
+		return playerhand;
+	}
+
+	public boolean isPlaying() {
+		return isPlaying;
+	}
+
+	public void setPlaying(boolean isPlaying) {
+		this.isPlaying = isPlaying;
+	}
+
 	public Player(Socket socket, Server server) {
 		connection = socket;
 		this.server = server;

@@ -1,6 +1,7 @@
 package server;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 public class Poker{
 	/**
 	 * Broadcast Keywords
@@ -60,11 +61,11 @@ public class Poker{
 		ArrayList<Player> pl = new ArrayList<>();
 		for(int i = startingPlayer; i< players.size() ;  i++)
 		{
-			pl.add(players.get(i)); //get's player and adds to pl
+			pl.add(players.get(i)); //get's player and adds to pl (current position to the end)
 		}
-		for(int i = 0 ; i < startingPlayer ; i++)
+		for(int i = 0 ; i < startingPlayer ; i++) //startings from 0 and goes to starting player
 		{
-			pl.add(players.get(i)); //get's player and adds to pl
+			pl.add(players.get(i));
 		}
 		return pl;
 	}
@@ -72,5 +73,35 @@ public class Poker{
 	public void startRound()
 	{
 		
+	}
+	
+	public void rankPlayers()
+	{
+		for(Player p : activePlayers)
+		{
+	        p.initializePlayerHand();
+		}
+		for (int i=0; i<activePlayers.size(); i++)
+        {
+        int min=i;
+        for (int j = i+1; j<activePlayers.size(); j++)
+        {
+        	if(activePlayers.get(j).playerHand().getHandRank().compareTo(activePlayers.get(min).playerHand().getHandRank()) > 0)
+            {
+                min = j;
+            }
+        	else if((activePlayers.get(j).playerHand().getHandRank().compareTo(activePlayers.get(min).playerHand().getHandRank()) == 0)) //Tie_Breaker
+            {
+        		if(activePlayers.get(j).playerHand().getHandRank().equals(HandRanks.Royal_Flush))
+        		{
+        			
+        		}
+        		Card tempCj = activePlayers.get(j).playerHand().highCard(activePlayers.get(j).hand());
+        		Card tempCmin = activePlayers.get(min).playerHand().highCard(activePlayers.get(min).hand());
+//        		if()
+            }
+        }
+        Collections.swap(activePlayers, i, min);
+        }
 	}
 }

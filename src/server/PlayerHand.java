@@ -5,9 +5,34 @@ import java.util.Collections;
 import java.util.List;
 
 public class PlayerHand {
-	ArrayList<Card> playerCards;
-	ArrayList<Card> combo;
-	HandRanks handRank;
+	public ArrayList<Card> getPlayerCards() {
+		return playerCards;
+	}
+
+	public void setPlayerCards(ArrayList<Card> playerCards) {
+		this.playerCards = playerCards;
+	}
+
+	public ArrayList<Card> getCombo() {
+		return combo;
+	}
+
+	public void setCombo(ArrayList<Card> combo) {
+		this.combo = combo;
+	}
+
+	public HandRanks getHandRank() {
+		return handRank;
+	}
+
+	public void setHandRank(HandRanks handRank) {
+		this.handRank = handRank;
+	}
+	private ArrayList<Card> playerCards;
+	private ArrayList<Card> combo;
+	private HandRanks handRank;
+	
+	
 	
 	public static void main(String[] args) {
 		ArrayList<Card> cards = new ArrayList<>();
@@ -444,6 +469,7 @@ public class PlayerHand {
 	}
 	public ArrayList<Card> getPlayerCombo()
 	{
+		combo.clear();
 		if(isRoyalFlush())
 		{
 			handRank = HandRanks.Royal_Flush;

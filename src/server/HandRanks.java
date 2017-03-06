@@ -11,10 +11,14 @@ public enum HandRanks {
 	One_Pair(1),
 	High_Card(0);
 	
+	public static void main(String[] args) {
+		System.out.println(Royal_Flush.compareTo(Royal_Flush));
+	}
+	
 	int value;
 	HandRanks(int value)
 	{
-
+		
 	}
 	
 	public int getValue()
