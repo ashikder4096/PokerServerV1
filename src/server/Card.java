@@ -18,7 +18,7 @@ public class Card {
 		
 		Card a = new Card("A", "DIAMOND", 14);
 		Card b = new Card("A", "SPADES", 14);
-		System.out.println(a.comparedTo(b));
+		System.out.println(b.comparedTo(a));
 	}
 
 	/**
@@ -80,21 +80,30 @@ public class Card {
 	}
 	
 	//Poker logic
-	public Card comparedTo(Card b)
+	/**
+	 * 
+	 * @param b card to compared to
+	 * @return 1 if this is higher, 0 if they are the same, -1 if the other card is higher
+	 */
+	public int comparedTo(Card b)
 	{
 		if(this.pointValue == b.pointValue)
 		{
 			if(this.suit.compareTo(b.suit) >0)
 			{
-				return this;
+				return 1;
 			}
-			else return b;
+			else if(this.suit.compareTo(b.suit)  == 0)
+			{
+				return 0;
+			}
+			else return -1;
 		}
 		if(this.pointValue > b.pointValue)
 		{
-			return this;
+			return 1;
 		}
-		else return b;
+		else return -1;
 	}
 
 	/** Compare this card with the argument.

@@ -73,9 +73,11 @@ public class PlayerHand {
 		
 		Card a4 = new Card("A", "CLUBS", 14);
 		
-//		cards.add(a1); cards.add(k1); cards.add(q1); cards.add(j1); cards.add(ten1); //RoyalFlush && StraightFlush && flush && straight
+		
+		
+		cards.add(a1); cards.add(k1); cards.add(q1); cards.add(j1); cards.add(ten1); //RoyalFlush && StraightFlush && flush && straight
 //		cards.add(a2); cards.add(j1); cards.add(j2); cards.add(k1); cards.add(q1); cards.add(ten1); cards.add(a2); cards.add(a3); cards.add(a4);
-		cards.add(new Card("3", "DIAMOND", 3)); cards.add(new Card("J", "SPADES", 11)); cards.add(new Card("8", "CLUBS", 8)); cards.add(new Card("4", "HEARTS", 4)) ; cards.add(new Card("2", "CLUBS", 2));
+//		cards.add(new Card("3", "DIAMOND", 3)); cards.add(new Card("J", "SPADES", 11)); cards.add(new Card("8", "CLUBS", 8)); cards.add(new Card("4", "HEARTS", 4)) ; cards.add(new Card("2", "CLUBS", 2));
 		
 		PlayerHand hand = new PlayerHand(cards);
 		
@@ -83,13 +85,14 @@ public class PlayerHand {
 //		hand.displayMultiHand(multiCards);
 //		hand.sortBySuit(cards);
 //		hand.displayHand(cards);
-		hand.getPlayerCombo();
+//		hand.getPlayerCombo();
 		
-//		System.out.println("isRoyalFlush: " + hand.isRoyalFlush(cards));
-//		System.out.println("isStraightFlush: "+ hand.isStraightFlush(cards));
-//		System.out.println("isFourOfAKind: " + hand.isFourOfAKind(cards));
-//		System.out.println("IsFullHouse: " + hand.isFullHouse(cards));
-//		System.out.println("isFlush: " + hand.isFlush(cards));
+//		System.out.println("isRoyalFlush: " + hand.isRoyalFlush());
+//		System.out.println("isStraightFlush: "+ hand.isStraightFlush());
+		System.out.println("isStraightFlush: "+ hand.isStraight());
+//		System.out.println("isFourOfAKind: " + hand.isFourOfAKind());
+//		System.out.println("IsFullHouse: " + hand.isFullHouse());
+//		System.out.println("isFlush: " + hand.isFlush());
 		
 //		hand.sortByPointValue(cards);
 //		hand.displayHand(cards);
@@ -104,10 +107,10 @@ public class PlayerHand {
 //		{
 //			System.out.println(i);
 //		}
-		System.out.println(hand.handRank);
-		hand.displayCombo();
-		System.out.println();
-		hand.displayHand();
+//		System.out.println(hand.handRank);
+//		hand.displayCombo();
+//		System.out.println();
+//		hand.displayHand();
 	}
 	
 	//Constructor
@@ -204,18 +207,18 @@ public class PlayerHand {
 
 	public boolean isStraight()
 	{
-		for(int i = 0 ; i <= playerCards.size()-5 ; i++)
+		
+		sortByPointValue(playerCards);
+		ArrayList<Integer> i = cardsPointValue(playerCards);
+		
+		if (i.contains(i.get(0) + 1) && i.contains(i.get(0) + 2) && i.contains(i.get(0) + 3) && i.contains(i.get(0) + 4))
 		{
-			if(playerCards.get(i).pointValue()+1 == playerCards.get(i+1).pointValue() && playerCards.get(i).pointValue()+2 == playerCards.get(i+2).pointValue() && playerCards.get(i).pointValue()+3 == playerCards.get(i+3).pointValue() && playerCards.get(i).pointValue()+4 == playerCards.get(i+4).pointValue())
-			{
-				combo.add(playerCards.get(i));
-				combo.add(playerCards.get(i+1));
-				combo.add(playerCards.get(i+2));
-				combo.add(playerCards.get(i+3));
-				combo.add(playerCards.get(i+4));
-				return true;
-			}
-
+			combo.add(playerCards.get(0));
+			combo.add(playerCards.get(1));
+			combo.add(playerCards.get(2));
+			combo.add(playerCards.get(3));
+			combo.add(playerCards.get(4));
+			return true;
 		}
 		return false;
 	}
@@ -223,7 +226,7 @@ public class PlayerHand {
 	public boolean isThreeOfAKind()
 	{
 		sortByPointValue(playerCards);
-		for(int i = 0 ; i <= playerCards.size()-2 ; i++)
+		for(int i = 0 ; i < playerCards.size()-2 ; i++)
 		{
 			if((playerCards.get(i).pointValue() == playerCards.get(i+1).pointValue()) && (playerCards.get(i).pointValue() == playerCards.get(i+2).pointValue()))
 			{

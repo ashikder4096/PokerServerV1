@@ -18,26 +18,60 @@ public class Player implements Runnable{
 	
 	private PlayerHand playerhand;
 	
+	private int bet = 0;
+	private int Balance = 0;
+	
+	private PlayerAction action;
+	private boolean isBigBlind = false, isSmallBlind = false;
+	
 	private ArrayList<Card> Hand;
+	
 	private boolean isPlaying = false;
 	
-	public ArrayList<Card> hand()
+	public int getBet()
 	{
-		return Hand;
+		return bet;
+	}
+	
+	public void setHand(ArrayList<Card> Hand)
+	{
+		this.Hand = Hand;
 	}
 
+	/**
+	 * broadcast "#clearHand" to clear user hand
+	 */
 	public void clearHand() {
+		try {
+			write.writeUTF("#clearHand");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Hand.clear();
 	}
 	
+	/**
+	 * adds card to Hand using keyboard "#addToHand"
+	 * sends a card as string
+	 * @param c
+	 */
 	public void addToHand(Card c)
 	{
 		Hand.add(c);
+		try {
+			write.writeUTF("#addToHand");
+			write.writeUTF(c.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void initializePlayerHand()//meant to be used at the end of the game
 	{
 		playerhand = new PlayerHand(Hand);
+		playerhand.getPlayerCombo();
 	}
 	
 	public PlayerHand playerHand() {
@@ -48,10 +82,26 @@ public class Player implements Runnable{
 		return isPlaying;
 	}
 
+	/**
+	 * sends isPlaying with keyboard #isPlaying
+	 * @param isPlaying
+	 */
 	public void setPlaying(boolean isPlaying) {
 		this.isPlaying = isPlaying;
+		try {
+			write.writeUTF("#isPlaying");
+			write.writeBoolean(isPlaying);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
+	public Player(String username) //used for normal testing
+	{
+		this.username = username;
+	}
+	
 	public Player(Socket socket, Server server) {
 		connection = socket;
 		this.server = server;
@@ -85,11 +135,6 @@ public class Player implements Runnable{
 
 	public String getUsername() {
 		return username;
-	}
-	
-	public void setUsername(String username)
-	{
-		this.username = username;
 	}
 
 	public Socket Socket() {
@@ -177,6 +222,91 @@ public class Player implements Runnable{
 			arr.add(c);
 		}
 		return arr;
+	}
+	
+	/**
+	 * sends out "#getPlayerAction
+	 * Should receive: 
+	 * 1) UTF(PlayerAction as String)
+	 * 2) INT(actionAmount)
+	 * 
+	 * Also sets bet to action.getAmount();
+	 * @return playerAction
+	 */
+	public PlayerAction getPlayerAction()
+	{
+		try {
+			write.writeUTF("#getPlayerAction");
+			action = PlayerAction.toPlayerAction(read.readUTF());
+			action.setAmount(read.readInt());
+			Balance -= action.getAmount();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		bet = action.getAmount();
+		isBigBlind = false;
+		isSmallBlind = false;
+		return action;
+	}
+	
+	public boolean isBigBlind() {
+		return isBigBlind;
+	}
+
+	/**
+	 * Sends out if is BigBlind with keyword #BigBlind
+	 * @param isBigBlind
+	 */
+	public void setBigBlind(boolean isBigBlind) {
+		this.isBigBlind = isBigBlind;
+		try {
+			write.writeUTF("#BigBlind");
+			write.writeBoolean(isBigBlind);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public boolean isSmallBlind() {
+		return isSmallBlind;
+	}
+
+	/**
+	 * Sets smallBlind using keyboard "#SmallBlind"
+	 * @param isSmallBlind
+	 */
+	public void setSmallBlind(boolean isSmallBlind) {
+		this.isSmallBlind = isSmallBlind;
+		try {
+			write.writeUTF("#SmallBlind");
+			write.writeBoolean(isSmallBlind);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Sends out the amount to be added to player balance
+	 * @param amount
+	 */
+	public void addBalance(int amount)
+	{
+		try {
+			write.writeUTF("#addBalance");
+			write.writeInt(amount);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Balance += amount;
+	}
+	
+	public String toString()
+	{
+		return username;
 	}
 	
 	//PokerLogic
